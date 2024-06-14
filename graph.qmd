@@ -1,0 +1,47 @@
+---
+title: "Graph"
+author: "Sanaka Dash"
+format: html
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+
+library(tidyverse)
+library(dplyr)
+library(plotly)
+mass_tracts <- read_csv("data/mass-tracts.csv")
+```
+
+```{r}
+p <- mass_tracts |>
+  ggplot(aes(x = med_income,
+             fill = race)) +
+  geom_density(alpha = 0.5,
+               adjust = 2) +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  theme_minimal() +
+  theme(
+       axis.title.y = element_blank(),
+       axis.text.y = element_blank(),
+       axis.ticks.y = element_blank()
+       ) +
+  labs(
+      title = "Median Income for Massachusetts Census Tracts",
+      subtitle = "The richest tracts are White",
+      caption = "The race of each tract is determined by the most numerous racial group \n       present in that tract. Data from the American Community Survey 2022. ",
+      x = "Median Income",
+      fill = "Race"
+      )
+```
+
+```{r}
+p_interactive <- ggplotly(p)
+
+p_interactive
+```
+
